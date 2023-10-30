@@ -28,13 +28,10 @@ db = PGVector.from_documents(embedding=embeddings, documents=texts, collection_n
 
 query = input("QUESTION: ")
 
-similar = db.similarity_search_with_score(query, k=2)
-similar_text = ""
+similar = db.similarity_search_with_score(query, k=1)
+similar_text = similar[0][0].page_content
 
-for doc in similar:
-    similar_text += doc[0].page_content
-
-template = """Answer the question using the context provided.
+template = """Answer the question using the context provided. If you are not sure of the answer, say 'I do not know the answer to that question'
 Question: {question}
 Context: {context} """
 
@@ -47,4 +44,5 @@ llm_chain = LLMChain(prompt=prompt, llm=llm)
 answer = llm_chain.run({'question': query,'context':similar_text})
 
 answer_template = f"\nCONTEXT:\n{similar_text}\n\nANSWER:{answer}"
+
 print(answer_template)
