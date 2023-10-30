@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import CreateQuery
+from .views import search_query
 
 urlpatterns = [
-    path("",CreateQuery.as_view(), name="Create Query")
+    path("search", search_query, name="AI Search")
 ]
 
